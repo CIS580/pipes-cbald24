@@ -3,7 +3,7 @@
 
 /* Classes */
 const Game = require('./game');
-
+const Pipe = require('./pipe');
 /* Global variables */
 var canvas = document.getElementById('screen');
 var game = new Game(canvas, update, render);
@@ -11,19 +11,28 @@ var image = new Image();
 image.src = 'assets/pipes.png';
 var score = 0;
 var level = 1;
+var startPipe = new Pipe(10, 128, 0, false);
+var endPipe = new Pipe(0, (14*64)+128, (9*64), true);
 var board = [0];
 clearBoard();
 var pipes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 var state = "waiting for click";
 var x = 0;
 var y = 0;
+var pipeToPlace = new Pipe(getRandomInt(0, 10), 32, 544, false);
+
+
+
 canvas.onclick = function(event) {
   event.preventDefault();
   x = Math.floor((event.clientX - 137) / 64);
   y = Math.floor((event.clientY - 58) / 64);
-
   var loc = ((y * 15) + x);
-
+  switch(state)
+  {
+    case "waiting for click":
+      
+  }
   // TODO: Place or rotate pipe tile
 }
 
@@ -71,11 +80,18 @@ function render(elapsedTime, ctx) {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 128, canvas.height);
   // TODO: Render the board
-ctx.fillStyle = "white";
-    ctx.font = "20px Arial";
-    ctx.fillText("SCORE: " +x, 7, 32);
-    ctx.fillText("LEVEL: " +y, 7, 56);
-	 
+  ctx.fillStyle = "white";
+  ctx.font = "20px Arial";
+  ctx.fillText("SCORE: " +x, 7, 32);
+  ctx.fillText("LEVEL: " +y, 7, 56);
+	pipeToPlace.render(ctx);
+  for (var j = 0; j < board.length; j++)
+  {
+    if(board[j] != 0)
+    {
+      board[j].render(ctx);
+    }
+  }
 }
 
 function clearBoard() {
@@ -83,8 +99,14 @@ function clearBoard() {
   {
     board[i] = 0; //sets the values of the board to zero to indicate they are empty
   }
+  board[0] = startPipe;
+  board[15*10-1] = endPipe;
 }
-},{"./game":2}],2:[function(require,module,exports){
+
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+},{"./game":2,"./pipe":3}],2:[function(require,module,exports){
 "use strict";
 
 /**
@@ -142,4 +164,138 @@ Game.prototype.loop = function(newTime) {
   this.frontCtx.drawImage(this.backBuffer, 0, 0);
 }
 
+},{}],3:[function(require,module,exports){
+"use strict";9
+
+module.exports = exports = Pipe;
+
+function Pipe(i, x, y, end)
+{
+    this.pipeID = i;
+    this.x = x+1;
+    this.y = y+1;
+    this.height = this.width = 62;
+    this.spritesheet = new Image();
+    this.spritesheet.src = encodeURI('assets/pipes.png');
+    this.empty = true;
+    this.end = end;
+    this.sideOpen = 
+    {
+        top:false,
+        left:false,
+        right:false,
+        bottom:false
+    }
+    this.sourceRect =
+    {
+        x: 0,
+        y: 0,
+    }
+    switch(i)
+    {
+        case 0:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 0;
+            this.sourceRect.y = 0;
+            break;
+        case 1:
+            this.sideOpen.top = false;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 32;
+            break;
+        case 2:
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 32;
+            break;
+        case 3:     
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 64;
+            break;
+        case 4:
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 64;
+            break;
+        case 5:
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 96;
+            break;
+        case 6:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 96;
+            break;
+        case 7:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 128;
+            break;
+        case 8:
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 128;
+            break;
+        case 9:
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 95;
+            this.sourceRect.y = 32;
+            break;
+        case 10:
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 95;
+            this.sourceRect.y = 64;
+            break;
+    }
+}
+
+Pipe.prototype.update = function()
+{
+
+}
+
+Pipe.prototype.render = function(ctx)
+{
+    ctx.drawImage(this.spritesheet, 
+                //image
+                this.sourceRect.x, this.sourceRect.y, 32, 32,
+                //grabbing what we want to display from image
+                this.x, this.y, this.height, this.width);  
+                //placing what we want where we want it
+}
 },{}]},{},[1]);
