@@ -7,11 +7,13 @@ function Pipe(i, x, y, end)
     this.pipeID = i;
     this.x = x+1;
     this.y = y+1;
+    this.justFilled = false;
     this.height = this.width = 62;
     this.spritesheet = new Image();
     this.spritesheet.src = encodeURI('assets/pipes.png');
     this.empty = true;
     this.end = end;
+    
     this.sideOpen = 
     {
         top:false,
@@ -117,9 +119,101 @@ function Pipe(i, x, y, end)
     }
 }
 
-Pipe.prototype.update = function()
+Pipe.prototype.rotate = function()
 {
-
+    switch(this.pipeID)
+    {
+        case 1:
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 32;
+            this.pipeID = 2;
+            break;
+        case 2:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 64;
+            this.pipeID = 3;
+            break;
+        case 3:     
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 64;
+            this.pipeID = 4;
+            break;
+        case 4:          
+            this.sideOpen.top = false;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 32;
+            this.pipeID = 1;
+            break;
+        case 5:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 96;
+            this.pipeID = 6;
+            break;
+        case 6:
+            this.sideOpen.top = true;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 63;
+            this.sourceRect.y = 128;
+            this.pipeID = 7;
+            break;
+        case 7:
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 128;
+            this.pipeID = 8;
+            break;
+        case 8:
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 31;
+            this.sourceRect.y = 96;
+            this.pipeID = 5;
+            break;
+        case 9:
+            this.sideOpen.top = true;
+            this.sideOpen.left = false;
+            this.sideOpen.right = false;
+            this.sideOpen.bottom = true;
+            this.sourceRect.x = 95;
+            this.sourceRect.y = 64;
+            this.pipeID = 10;
+            break;
+        case 10:        
+            this.sideOpen.top = false;
+            this.sideOpen.left = true;
+            this.sideOpen.right = true;
+            this.sideOpen.bottom = false;
+            this.sourceRect.x = 95;
+            this.sourceRect.y = 32;
+            this.pipeID = 9;
+            break;
+    }
 }
 
 Pipe.prototype.render = function(ctx)
