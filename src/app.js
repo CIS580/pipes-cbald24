@@ -32,6 +32,7 @@ var bgMusic = new Audio('assets/bgm.mp3');
   bgMusic.loop = true;
   bgMusic.volume = 0.1;
   bgMusic.play();
+var leveled = false;
 
 
 canvas.onclick = function(event) 
@@ -87,6 +88,7 @@ masterLoop(performance.now());
  */
 function update(elapsedTime) 
 {
+  leveled = false;
   headStart -= elapsedTime;
   if (headStart <= 0)
   {
@@ -104,10 +106,19 @@ function update(elapsedTime)
       {
         if(board[i].empty == false)
         {
-          checkRight(i);
+          
           checkLeft(i);
           checkAbove(i);
+          checkRight(i);
+          if(levelUp == true)
+          {
+            return;
+          }
           checkBelow(i);
+          if(levelUp == true)
+          {
+            return;
+          }
         }
       }
       if(flowCount == 0)
@@ -228,6 +239,7 @@ function checkRight(loc)
           if(board[loc + 1].end)
           {
             newLevel();
+            leveled = true;
           }
           return true;
         }     
@@ -302,8 +314,8 @@ function checkBelow(loc)
           if(board[loc+15].end)
           {
             newLevel();
-          }
-          
+            leveled = true;
+          }       
           return true;
         }  
       }
@@ -323,5 +335,15 @@ function newLevel()
     level++;
     flowRate -= 200;
     headStart = 7000;
+    flowing = false;
+    timer = 0;
+    for(var i = 0; i<board.length; i++)
+    {
+      if(board[i] != 0)
+      {
+        board[i].empty = true;
+        board[i].justFilled = false;
+      }
+    }
   }
 }
