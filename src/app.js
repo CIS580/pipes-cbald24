@@ -58,7 +58,7 @@ canvas.oncontextmenu = function(event)
 {
     event.preventDefault();
     x = Math.floor((event.clientX - 137) / 64);
-    y = Math.floor((event.clientY - 58) / 64);
+    y = Math.floor((event.clientY - 84) / 64);
     var loc = ((y * 15) + x);
     if(x >= 0 && board[loc] != 0 && board[loc].empty == true)
     {
