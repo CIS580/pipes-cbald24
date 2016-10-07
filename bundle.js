@@ -146,7 +146,7 @@ function render(elapsedTime, ctx) {
   {
     ctx.font = "100px Arial";
     ctx.fillText("Game Over", 100, 100);
-    //goN.play();
+    goN.play();
     ctx.font = "20px Arial";
     ctx.fillText("score: "+score, 30, canvas.height - 30);
 
@@ -214,7 +214,7 @@ function clearWaterBoard()
 //checks to see if water can flow right
 function checkRight(loc)
 {
-  if((loc%14) != 0 || loc == 0)
+  if(((loc+1)%15) != 0 || loc == 0)
   {
     if(board[loc + 1] != 0 && board[loc].sideOpen.right == true && board[loc + 1].sideOpen.left == true)
     {
@@ -315,7 +315,7 @@ function checkBelow(loc)
 
 function newLevel()
 {
-  if(checkAbove[149] && board[134].empty == false)
+  if(board[148].empty == false || board[134].empty == false)
   {
     levelUp.play();
     clearBoard();
