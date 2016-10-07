@@ -145,7 +145,7 @@ function render(elapsedTime, ctx) {
   {
     ctx.font = "100px Arial";
     ctx.fillText("Game Over", 100, 100);
-    //goN.play();
+    goN.play();
     ctx.font = "20px Arial";
     ctx.fillText("score: "+score, 30, canvas.height - 30);
 
